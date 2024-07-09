@@ -5,18 +5,19 @@ const app = express();
 
 // Kết nối với MongoDB
 app.use(express.json());
-
+app.set('view engine','ejs');
 mongoose.connect('mongodb://localhost:27017/AND103')
 .then(() => {
     console.log("Kết nối thành công");
 }).catch((error) => {
     console.log("Kết nối thất bại " + error);
 });
-app.get('/sinhvien', async (req, res) => {
+app.get('/sinhvien/view', async (req, res) => {
     try {
         const sinhviens = await SinhVien.find(); //đọc dữ liệu từ csdl
         console.log(sinhviens);
-        res.json(sinhviens);//chuyển dữ liệu json
+        // res.json(sinhviens);
+        res.render('index',{sinhviens : sinhviens});
     } catch (error) {
         res.status(500).send(error);
     }
